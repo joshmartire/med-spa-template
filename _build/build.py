@@ -45,7 +45,8 @@ CATS = [
 ]
 CATS = [c for c in CATS if any(s["cat"] == c[0] for s in SERVICES)]
 CAT_LABEL = {c: l for c, l, _ in CATS}
-CAT_TONE = {"injectables": "t-acc", "skin": "t-f2", "laser": "t-f3"}
+CAT_TONE = {"injectables": "t-paper", "skin": "t-f2", "laser": "t-mist"}
+STANDARDS = [x for x in (CFG.get("standards") or []) if x.get("title")]
 CONCERNS = [
     ("lines", "Lines and wrinkles"), ("volume", "Lost volume"), ("lips", "Lips"), ("dull", "Dull or tired skin"),
     ("texture", "Texture and scarring"), ("spots", "Sun spots and redness"), ("hair", "Unwanted hair"),
@@ -68,10 +69,10 @@ def _lum(h):
 def contrast(a, b):
     la, lb = sorted((_lum(a), _lum(b)), reverse=True); return (la + 0.05) / (lb + 0.05)
 
-INK = "#1c1517"     # page ground and dark text
-PAPER = "#f7f1ef"   # porcelain: light panels and light text
-PAPER_D = "#ece2df"
-CHAR = "#2e2427"
+INK = "#10242e"     # deep navy: text and dark panels
+PAPER = "#ffffff"   # clinical white: panels and light text
+PAPER_D = "#e8eef0" # mist: page ground and quiet panels
+CHAR = "#173440"
 
 def _colour(key, default, against, what):
     v = (CFG.get(key) or default).strip()
@@ -81,9 +82,9 @@ def _colour(key, default, against, what):
         sys.exit(f"site.config.json: {key} {v} can't carry {what} ({contrast(v, against):.1f}:1, needs 4.5:1). "
                  f"{'Pick a lighter version of the colour.' if against == INK else 'Pick a deeper version of the colour.'}")
     return v
-ACCENT = _colour("accent", "#f4b8c4", INK, "dark text")
-F2 = _colour("field_2", "#c8d8c3", INK, "dark text")
-F3 = _colour("field_3", "#6b1f37", PAPER, "light text")
+ACCENT = _colour("accent", "#1f6f78", PAPER, "white button text")
+F2 = _colour("field_2", "#f1e4e1", INK, "dark text")
+F3 = _colour("field_3", "#0e2a36", PAPER, "light text")
 
 # ---- logo
 LOGO_FILE = (CFG.get("logo") or "").strip()
@@ -440,12 +441,11 @@ def page(path, *, title, desc, body, active=None, crumbs=None, schema=None, noin
 <meta property="og:image:alt" content="{html.escape(BIZ)}, medical aesthetics in {html.escape(CFG["region_label"])}">
 <meta property="og:locale" content="en_CA">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="{INK}">
+<meta name="theme-color" content="{PAPER_D}">
 <link rel="icon" href="{asset(path, "img/favicon.svg")}" type="image/svg+xml">
 <link rel="icon" href="{asset(path, "img/favicon-32.png")}" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="{asset(path, "img/apple-touch-icon.png")}">
-<link rel="preload" href="{asset(path, "fonts/b800.woff2")}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{asset(path, "fonts/b400.woff2")}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{asset(path, "fonts/manrope.woff2")}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{vasset(path, "css/main.css")}">
 <style>:root{{--acc:{ACCENT};--f2:{F2};--f3:{F3}}}</style>
 {boot}
@@ -469,10 +469,10 @@ def page(path, *, title, desc, body, active=None, crumbs=None, schema=None, noin
         f.write(out)
     PAGES.append({"path": path, "url": canonical if path != "404.html" else None, "title": full_title, "noindex": noindex})
 
-def page_head(here, *, h1, lead, crumbs, active, tone="t-acc", art="peony", art_label=None, ctas=True, slot_key=None, size=""):
+def page_head(here, *, h1, lead, crumbs, active, tone="t-paper", art="peony", art_label=None, ctas=True, slot_key=None, size=""):
     btns = ""
     if ctas:
-        btns = (f'<div class="btns"><a class="btn{" on-dark" if tone == "t-f3" else ""}" href="{href(here, PATH["contact"])}">{CTA} {ui("arrow")}</a>'
+        btns = (f'<div class="btns"><a class="btn" href="{href(here, PATH["contact"])}">{CTA} {ui("arrow")}</a>'
                 f'<a class="tlink" href="tel:{TEL}">{ui("phone")} {PHONE}</a></div>')
     pic = (f'<div class="pkh-art">{slot(here, slot_key, art, art_label, lazy=False) if slot_key else A.draw(art, art_label)}</div>') if art else ""
     return f'''<header class="pkh {tone}{" " + size if size else ""}">
@@ -486,7 +486,7 @@ def page_head(here, *, h1, lead, crumbs, active, tone="t-acc", art="peony", art_
 
 def faq_bands(faqs, here, head=None, head_id="faq-h"):
     rows = "".join(f'<div class="fb"><h3>{html.escape(q)}</h3><p>{expand(a, here)}</p></div>' for q, a in faqs)
-    top = f'<div class="fb-h t-acc"><h2 class="d" id="{head_id}">{disp(head)}</h2></div>' if head else ""
+    top = f'<div class="fb-h t-f2"><h2 class="d" id="{head_id}">{disp(head)}</h2></div>' if head else ""
     return f'<section class="fbs panel"{f" aria-labelledby=\"{head_id}\"" if head else ""}>{top}{rows}</section>'
 
 def faq_list(faqs, here):
@@ -513,6 +513,8 @@ def aside_html(here, s=None, city=None):
             blocks.append(f'<div class="as t-paper-d"><h2>Pairs well with</h2><ul>{rel}</ul></div>')
         cl = "".join(f'<li><a href="{href(here, svc_city_path(s["slug"], c["slug"]))}"{" aria-current=\"page\"" if city and c["slug"] == city["slug"] else ""}>{s["name"]} in {c["name"]}</a></li>' for c in CITIES)
         blocks.append(f'<div class="as t-paper-d"><h2>Nearby</h2><ul>{cl}</ul></div>')
+    if STANDARDS:
+        blocks.insert(1, '<div class="as t-f3"><h2>Your safety</h2><ul class="sf">' + "".join(f'<li>{ui("check")}<span>{html.escape(x["title"])}</span></li>' for x in STANDARDS[:5]) + '</ul></div>')
     blocks.append(f'<div class="as t-paper-d"><h2>Hours</h2><p>{hours}<br>{html.escape(CFG.get("hours_note", ""))}</p></div>')
     return '<aside class="aside" aria-label="Book and visit">' + "".join(blocks) + "</aside>"
 
@@ -524,10 +526,10 @@ def finder_html(here, head_tag="h2"):
     items = ""
     for s in SERVICES:
         cn = ", ".join(l for k, l in CONCERNS if k in s["concerns"])
-        items += (f'<li class="fr {CAT_TONE[s["cat"]]}" data-c="{" ".join(s["concerns"])}" data-dt="{s["dt"]}"><a href="{href(here, svc_path(s["slug"]))}">'
-                  f'<span class="fr-n">{s["name"]}</span><span class="fr-c">For {cn.lower()}</span>'
+        items += (f'<li class="fr" data-c="{" ".join(s["concerns"])}" data-dt="{s["dt"]}"><a href="{href(here, svc_path(s["slug"]))}">'
+                  f'<span class="fr-k fk-{s["cat"]}">{CAT_LABEL[s["cat"]]}</span><span class="fr-n">{s["name"]}</span><span class="fr-c">For {cn.lower()}</span>'
                   f'<span class="fr-m"><span>{s["time"]}</span><span>{s["downtime"] if "downtime" in s["downtime"].lower() else "Downtime: " + s["downtime"].lower()}</span><span>{price_text(s["slug"], short=True).capitalize()}</span></span></a></li>')
-    return f'''<section class="finder panel t-paper" id="finder" aria-labelledby="finder-h">
+    return f'''<section class="finder panel t-mist" id="finder" aria-labelledby="finder-h">
 <div class="fd-top"><{head_tag} class="sh d r" id="finder-h">Find your treatment</{head_tag}><p class="lead r">Pick what you'd like to change. We'll show the treatments that address it, how long they take and the downtime to plan for.</p></div>
 <form class="fd-f r" aria-label="Treatment finder" onsubmit="return false">
 <fieldset><legend>What would you like to change?</legend><div class="chips">{chips}</div></fieldset>
@@ -552,7 +554,7 @@ def build_service(s):
     here = svc_path(s["slug"])
     crumbs = [("Home", PATH["home"]), ("Treatments", PATH["services"]), (s["name"], None)]
     cities = "".join(f'<a class="pill" href="{href(here, svc_city_path(s["slug"], c["slug"]))}">{s["name"]} in {c["name"]}</a>' for c in CITIES)
-    content = f'''{page_head(here, h1=s["h1"], lead=s["lead"], crumbs=crumbs, active="services", tone=CAT_TONE[s["cat"]], art=s["art"])}
+    content = f'''{page_head(here, h1=s["h1"], lead=s["lead"], crumbs=crumbs, active="services", tone="t-paper", art=s["art"])}
 <section class="svb panel t-paper"><div class="svg2">
 <div class="prose r">
 {glance(s, here)}
@@ -604,7 +606,7 @@ def build_service_city(s, c, idx):
 <p>{c["visit"]} {"Starting prices are on our <a href=\"" + href(here, PATH["menu"]) + "\">treatment menu</a>." }</p>
 <h2>More for {c["name"]} clients</h2>
 <p>{rel_sentence}We also have pages for {other_links}. Every treatment we offer is listed on our <a href="{href(here, city_path(c["slug"]))}">{c["name"]} area page</a>.</p>'''
-    content = f'''{page_head(here, h1=f'{s["name"]} in {c["name"]}', lead=f'{sentence_name(s)} for clients in {c["name"]}, {PROV}: planned at a complimentary consultation with a licensed provider.', crumbs=crumbs, active="services", tone=CAT_TONE[s["cat"]], art=s["art"])}
+    content = f'''{page_head(here, h1=f'{s["name"]} in {c["name"]}', lead=f'{sentence_name(s)} for clients in {c["name"]}, {PROV}: planned at a complimentary consultation with a licensed provider.', crumbs=crumbs, active="services", tone="t-paper", art=s["art"])}
 <section class="svb panel t-paper"><div class="svg2">
 <div class="prose r">{expand(body, here)}</div>
 {aside_html(here, s, c)}
@@ -636,8 +638,9 @@ def cat_sheets(here, sticky=True, city=None, head_tag="h2", item_tag="h3"):
 def build_services_hub():
     here = PATH["services"]
     crumbs = [("Home", PATH["home"]), ("Treatments", None)]
-    content = f'''{page_head(here, h1="Treatments", lead=f"{len(SERVICES)} treatments across injectables, skin and laser, each planned at a complimentary consultation in {CITY_NAMES[0]}.", crumbs=crumbs, active="services", tone="t-acc", art="peony")}
+    content = f'''{page_head(here, h1="Treatments", lead=f"{len(SERVICES)} treatments across injectables, skin and laser, each planned at a complimentary consultation in {CITY_NAMES[0]}.", crumbs=crumbs, active="services", tone="t-paper", art="peony")}
 {finder_html(here)}
+{safety_html(here)}
 <section class="tsec" aria-labelledby="fam-h"><h2 class="vh" id="fam-h">Treatments by type</h2>{cat_sheets(here, sticky=False)}</section>
 {cta_panel(here)}
 </main>'''
@@ -658,11 +661,11 @@ def build_menu():
     crumbs = [("Home", PATH["home"]), ("Treatment menu", None)]
     consult = price_text("consultation")
     note = '<p class="demo-note">Website demo: these prices are samples. Each clinic sets its own.</p>' if CFG.get("demo_mode") else ""
-    content = f'''{page_head(here, h1="Treatment menu", lead="Starting prices for every treatment we offer. Your exact price depends on your plan and is confirmed at your consultation, before anything begins.", crumbs=crumbs, active="menu", tone="t-f2", art="jar")}
+    content = f'''{page_head(here, h1="Treatment menu", lead="Starting prices for every treatment we offer. Your exact price depends on your plan and is confirmed at your consultation, before anything begins.", crumbs=crumbs, active="menu", tone="t-paper", art="jar")}
 <section class="mnu" aria-labelledby="mnu-h">
-<div class="mn-c panel t-acc"><h2 class="d" id="mnu-h">Your first visit</h2><p>A relaxed conversation with a provider about your skin and your goals, and a plan you can take home. No obligation.</p>
-<p class="big d">{consult.lower()}</p><a class="btn" href="{href(here, PATH["contact"])}">{CTA} {ui("arrow")}</a></div>
-<div class="mn-l panel t-char"><h2 class="d">Starting prices</h2>{menu_rows(here)}{note}</div>
+<div class="mn-c panel t-f2"><h2 class="d" id="mnu-h">Your first visit</h2><p>A relaxed conversation with a provider about your skin and your goals, and a plan you can take home. No obligation.</p>
+<p class="big d">{consult}</p><a class="btn" href="{href(here, PATH["contact"])}">{CTA} {ui("arrow")}</a></div>
+<div class="mn-l panel t-paper"><h2 class="d">Starting prices</h2>{menu_rows(here)}{note}</div>
 </section>
 <section class="svb panel t-paper"><div class="prose narrow r">
 <h2>How pricing works</h2>
@@ -685,7 +688,7 @@ def build_city_hub(c):
     crumbs = [("Home", PATH["home"]), ("Areas", PATH["areas"]), (c["name"], None)]
     hub = "".join(f"<p>{p}</p>" for p in c["hub"])
     others = " · ".join(f'<a href="{href(here, city_path(o["slug"]))}">{o["name"]}</a>' for o in CITIES if o["slug"] != c["slug"])
-    content = f'''{page_head(here, h1=f'Med spa treatments in {c["name"]}', lead=c["intro"], crumbs=crumbs, active="areas", tone="t-f2", art="peony")}
+    content = f'''{page_head(here, h1=f'Med spa treatments in {c["name"]}', lead=c["intro"], crumbs=crumbs, active="areas", tone="t-paper", art="peony")}
 <section class="svb panel t-paper"><div class="prose narrow r">{hub}<h2>Getting here</h2><p>{c["visit"]}</p><p>Also nearby: {others}</p></div></section>
 <section class="tsec" aria-labelledby="ct-h"><h2 class="vh" id="ct-h">Treatments for {c["name"]} clients</h2>{cat_sheets(here, sticky=False, city=c)}</section>
 {cta_panel(here, title=f"{c['name']}, we're close by")}
@@ -696,47 +699,54 @@ def build_areas_hub():
     here = PATH["areas"]
     crumbs = [("Home", PATH["home"]), ("Areas", None)]
     rows = "".join(f'<li><a class="ar r" href="{href(here, city_path(c["slug"]))}"><span class="ar-n d">{c["name"]}</span><span class="ar-t">{c["intro"]}</span></a></li>' for c in CITIES)
-    content = f'''{page_head(here, h1="Areas we serve", lead=f"Clients come to us from {CITY_TEXT}. Each area page lists every treatment, with notes for that town.", crumbs=crumbs, active="areas", tone="t-acc", art="peony")}
+    content = f'''{page_head(here, h1="Areas we serve", lead=f"Clients come to us from {CITY_TEXT}. Each area page lists every treatment, with notes for that town.", crumbs=crumbs, active="areas", tone="t-paper", art="peony")}
 <section class="areas panel t-paper" aria-labelledby="ar-h"><h2 class="vh" id="ar-h">Towns</h2><ul class="ar-l">{rows}</ul>
 <p class="r">Coming from somewhere else in {html.escape(CFG["region_label"])}? <a href="{href(here, PATH["contact"])}">Book a consultation</a> and we'll see you at the clinic.</p></section>
 {cta_panel(here)}
 </main>'''
     page(here, title=f"Areas: {CITY_TEXT}", desc=f"Medical aesthetics for clients in {CITY_TEXT}, {PROV}: injectables, skin, laser and body treatments, with notes for each town.", body=content, active="areas", crumbs=crumbs)
 
+def safety_html(here, head_tag="h2"):
+    """'Your safety comes first': the clinic's standards (config "standards"), shown large and early."""
+    if not STANDARDS:
+        return ""
+    items = "".join(f'<li class="r"><span class="std-i">{ui("check")}</span><h3>{html.escape(x["title"])}</h3><p>{html.escape(x.get("text", ""))}</p></li>' for x in STANDARDS)
+    return f'''<section class="std panel t-paper" aria-labelledby="std-h">
+<div class="std-top"><{head_tag} class="sh d r" id="std-h">Your safety comes first</{head_tag}><p class="lead r">{html.escape(CFG.get("provider_line", ""))}</p></div>
+<ul class="std-l">{items}</ul>
+</section>'''
+
 def build_home():
     here = PATH["home"]
     p = P.home(CFG, CITIES, SERVICES)
     claim = CFG.get("hero_claim") or BIZ
-    unit = f'<span class="mq-u">{html.escape(claim)}<i class="dot" aria-hidden="true"></i></span>'
-    group = unit * 4
-    line = f'<span class="mq-g">{group}</span><span class="mq-g" aria-hidden="true">{group}</span>'
-    hero_pic = slot(here, "hero", "peony_tonal", None, lazy=False)
-    steps = "".join(f'<div class="vb {t}" style="--i:{i}"><p class="vb-w d" aria-hidden="true">{v.lower()}</p><div class="vb-t"><h3>{v}</h3><p>{d}</p></div><div class="vb-a">{A.draw(a)}</div></div>'
-                    for i, ((v, d), t, a) in enumerate(zip(p["steps"], ["t-acc", "t-f2", "t-f3", "t-paper"], ["peony", "jar", "drop", "mirror"])))
-    w1, w2 = P.APPROACH["words"]
-    c1, c2 = P.APPROACH["captions"]
+    hero_pic = slot(here, "hero", "peony", None, lazy=False)
+    trust = "".join(f'<li>{ui("check")}<span>{html.escape(x["title"])}</span></li>' for x in STANDARDS[:4])
+    steps = "".join(f'<li class="r"><h3>{v}</h3><p>{d}</p></li>' for v, d in p["steps"])
     areas = "".join(f'<li><a class="ar r" href="{href(here, city_path(c["slug"]))}"><span class="ar-n d">{c["name"]}</span><span class="ar-t">{c["short"]}</span></a></li>' for c in CITIES)
+    consult = price_text("consultation")
     content = f'''<header class="hero t-paper">
 {nav_html(here, "home")}
-<h1 class="mq-band"><span class="vh">{html.escape(claim)}: {html.escape(BIZ)}, medical aesthetics in {html.escape(CITY_NAMES[0])}</span>
-<span class="mq-sq" aria-hidden="true">{hero_pic}</span>
-<span class="mq mq-ink" aria-hidden="true"><span class="mq-tr">{line}</span></span>
-<span class="mq mq-lt" aria-hidden="true"><span class="mq-tr">{line}</span></span>
-</h1>
-<div class="hero-c"><p class="hero-s">{p["sentence"]}</p><p class="hero-f">{p["fact"]} · {html.escape(CITY_NAMES[0])}, {PROV}</p></div>
-<div class="hero-b"><p>{html.escape(address_text() or CFG["region_label"])}</p><a class="btn" href="{href(here, PATH["contact"])}">{CTA} {ui("arrow")}</a></div>
+<div class="hero-g">
+<div class="hero-t">
+<h1 class="d hero-h">{html.escape(claim)}</h1>
+<p class="lead">{p["sentence"]}</p>
+<div class="btns"><a class="btn" href="{href(here, PATH["contact"])}">{CTA} {ui("arrow")}</a><a class="btn ghost" href="{href(here, PATH["menu"])}">Treatments and prices</a></div>
+<p class="hero-f"><a href="tel:{TEL}">{ui("phone")} {PHONE}</a><span>{html.escape(address_text() or CFG["region_label"])}</span></p>
+</div>
+<div class="hero-p"><div class="hero-pic">{hero_pic}</div>
+<div class="hero-card"><p class="hc-k">Your first visit</p><p class="hc-v">{consult} consultation</p><p class="hc-s">With a licensed provider. No obligation.</p></div></div>
+</div>
+{f'<ul class="trust" aria-label="Our standards">{trust}</ul>' if trust else ""}
 </header>
 <main id="main">
+{safety_html(here)}
 <section class="treat" aria-labelledby="tr-h"><h2 class="sh d r" id="tr-h">{p["treat_head"]}</h2>{cat_sheets(here)}</section>
 {finder_html(here)}
-<section class="appr panel t-f2" aria-labelledby="ap-h">
-<div class="ap-top"><h2 class="sh d r" id="ap-h">{p["approach_head"]}</h2><p class="lead r">{p["approach_text"]}</p></div>
-<div class="ap-w"><figure><figcaption>{c1}</figcaption><p class="spec spec-a" aria-hidden="true">{w1}</p></figure><figure><figcaption>{c2}</figcaption><p class="spec spec-b" aria-hidden="true">{w2}</p></figure></div>
-</section>
-<section class="verbs" aria-labelledby="vb-h"><h2 class="vh" id="vb-h">How a visit works</h2>{steps}</section>
+<section class="steps panel t-f3" aria-labelledby="st-h"><div class="st-top"><h2 class="sh d r" id="st-h">How a visit works</h2><p class="lead r">{p["approach_text"]}</p></div><ol class="st-l">{steps}</ol></section>
 <section class="mnu" aria-labelledby="mn-h">
-<div class="mn-c panel t-acc"><h2 class="d">{p["consult_title"]}</h2><p>{p["consult_text"]}</p><p class="big d">{price_text("consultation").lower()}</p><a class="btn" href="{href(here, PATH["contact"])}">{CTA} {ui("arrow")}</a></div>
-<div class="mn-l panel t-char"><h2 class="d" id="mn-h">{p["menu_head"]}</h2>{menu_rows(here)}<a class="tlink" href="{href(here, PATH["menu"])}">Full treatment menu {ui("arrow")}</a></div>
+<div class="mn-c panel t-f2"><h2 class="d">{p["consult_title"]}</h2><p>{p["consult_text"]}</p><p class="big d">{consult}</p><a class="btn" href="{href(here, PATH["contact"])}">{CTA} {ui("arrow")}</a></div>
+<div class="mn-l panel t-paper"><h2 class="d" id="mn-h">{p["menu_head"]}</h2>{menu_rows(here)}<a class="tlink" href="{href(here, PATH["menu"])}">Full treatment menu {ui("arrow")}</a></div>
 </section>
 <section class="areas panel t-paper" aria-labelledby="ar-h"><div class="ar-top"><h2 class="sh d r" id="ar-h">{p["areas_head"]}</h2><p class="lead r">{p["areas_lead"]}</p></div><ul class="ar-l">{areas}</ul></section>
 {faq_bands(p["faqs"], here, head=p["faq_head"])}
@@ -751,7 +761,7 @@ def build_simple(key, *, title, desc, h1, lead, inner, active=None, noindex=Fals
     crumbs = [("Home", PATH["home"]), (h1[0].upper() + h1[1:], None)]
     side = aside_html(here) if aside else ""
     grid = "svg2" if aside else "solo"
-    content = f'''{page_head(here, h1=h1, lead=lead, crumbs=crumbs, active=active, tone="t-f2" if key in ("privacy", "terms", "cookies") else "t-acc", art=None if key in ("privacy", "terms", "cookies", "thanks") else "peony", ctas=hero_ctas, size="sm" if not aside else "")}
+    content = f'''{page_head(here, h1=h1, lead=lead, crumbs=crumbs, active=active, tone="t-paper", art=None if key in ("privacy", "terms", "cookies", "thanks") else "peony", ctas=hero_ctas, size="sm" if not aside else "")}
 <section class="svb panel t-paper"><div class="{grid}"><div class="prose r{" narrow" if not aside else ""}">{expand(inner(here), here)}</div>{side}</div></section>
 {cta_panel(here) if cta else ""}
 </main>'''
@@ -787,7 +797,7 @@ def build_contact():
 <div class="full"><button class="btn" type="submit">Request my consultation {ui("arrow")}</button></div>
 </form>'''
     a = address_text()
-    content = f'''{page_head(here, h1="Book a consultation", lead="Tell us how to reach you and what you're curious about. We'll call or email to confirm a time for your complimentary consultation.", crumbs=crumbs, active="contact", tone="t-acc", art="peony", ctas=False)}
+    content = f'''{page_head(here, h1="Book a consultation", lead="Tell us how to reach you and what you're curious about. We'll call or email to confirm a time for your complimentary consultation.", crumbs=crumbs, active="contact", tone="t-paper", art="peony", ctas=False)}
 <section class="svb panel t-paper"><div class="svg2 book">
 <div class="r"><h2 class="sh2">Your request</h2>{form}</div>
 <aside class="aside" aria-label="Clinic details">
@@ -810,7 +820,7 @@ def build_404():
     href = abs_href
     asset = lambda _f, a: BASE + "assets/" + a
     links = "".join(f'<li><a href="{abs_href(None, svc_path(s["slug"]))}">{s["name"]}</a></li>' for s in SERVICES)
-    content = f'''{page_head(here, h1="Page not found", lead="The page you're looking for may have moved. Try one of these instead.", crumbs=[("Home", PATH["home"]), ("Page not found", None)], active=None, tone="t-acc", art="drop", ctas=False)}
+    content = f'''{page_head(here, h1="Page not found", lead="The page you're looking for may have moved. Try one of these instead.", crumbs=[("Home", PATH["home"]), ("Page not found", None)], active=None, tone="t-paper", art="drop", ctas=False)}
 <section class="svb panel t-paper"><div class="prose narrow"><h2>Treatments</h2><ul>{links}</ul><p><a href="{BASE}">Back to home</a> · <a href="{abs_href(None, PATH["contact"])}">Book a consultation</a></p></div></section>
 </main>'''
     page(here, title="Page Not Found", desc="The page you're looking for couldn't be found.", body=content, noindex=True)

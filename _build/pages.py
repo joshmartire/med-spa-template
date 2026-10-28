@@ -26,7 +26,7 @@ def home(cfg, cities, services):
     city_text = ", ".join(c["name"] for c in cities[:-1]) + " and " + cities[-1]["name"]
     return {
         "desc": f"{cfg['business_name']} is a medical aesthetics clinic in {cities[0]['name']}, ON: injectables, skin treatments and laser, always starting with a consultation.",
-        "sentence": f"A consultation-first medical aesthetics clinic in {cities[0]['name']}, with injectables, skin and laser treatments planned to look like you, rested.",
+        "sentence": f"A medical aesthetics clinic in {cities[0]['name']}. Every treatment starts with a consultation and is performed by licensed providers, under the direction of our medical director.",
         "fact": "Complimentary consultations",
         "treat_head": "Three ways in",
         "cats": {
@@ -37,7 +37,7 @@ def home(cfg, cities, services):
         "finder_head": "Find your treatment",
         "finder_lead": "Pick what you'd like to change. We'll show the treatments that address it, how long they take and the downtime to plan for.",
         "approach_head": "Our approach",
-        "approach_text": "Good aesthetic work is measured. We start with less, check the result at two weeks and add only if you want more. Faces should still move, and skin should still look like skin.",
+        "approach_text": "Good aesthetic work is careful and measured. We start with less, check your result at two weeks and add only if you want more.",
         "steps": [
             ("Talk", "A complimentary consultation: your goals, your medical history and an honest recommendation."),
             ("Plan", "A written plan with the treatments, the timing and the price, before anything begins."),

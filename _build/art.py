@@ -35,7 +35,7 @@ def _peony(a, b, c, centre, leaf, bg):
 
 def peony(label=None, cls="art"):
     """The brand motif: a peony from above, rings of round petals and two leaves, on the deep field."""
-    return _svg(_peony("k-a", "k-3", "k-p", "k-2", "k-2", "k-3"), label, cls)
+    return _svg(_peony("k-al", "k-a", "k-p", "k-2", "k-2", "k-m"), label, cls)
 
 
 def peony_tonal(label=None, cls="art"):
@@ -44,29 +44,29 @@ def peony_tonal(label=None, cls="art"):
 
 
 def vial(label=None, cls="art"):
-    s = (_bg("k-3") + '<rect class="k-2d" x="0" y="318" width="400" height="82"/>'
-         '<rect class="k-2" x="152" y="52" width="96" height="56" rx="12"/>'
-         '<rect class="k-2d" x="142" y="100" width="116" height="28" rx="8"/>'
+    s = (_bg("k-m") + '<rect class="k-2" x="0" y="318" width="400" height="82"/>'
+         '<rect class="k-a" x="152" y="52" width="96" height="56" rx="12"/>'
+         '<rect class="k-3" x="142" y="100" width="116" height="28" rx="8"/>'
          '<rect class="k-p" x="164" y="124" width="72" height="30"/>'
          '<rect class="k-p" x="118" y="146" width="164" height="214" rx="36"/>'
-         '<path class="k-a" d="M118 236 H282 V324 A36 36 0 0 1 246 360 H154 A36 36 0 0 1 118 324Z"/>'
-         '<rect class="k-2" x="146" y="172" width="108" height="42" rx="8"/>'
+         '<path class="k-al" d="M118 236 H282 V324 A36 36 0 0 1 246 360 H154 A36 36 0 0 1 118 324Z"/>'
+         '<rect class="k-m" x="146" y="172" width="108" height="42" rx="8"/>'
          '<circle class="k-p" cx="240" cy="290" r="11"/><circle class="k-p" cx="212" cy="320" r="7"/>')
     return _svg(s, label, cls)
 
 
 def lips(label=None, cls="art"):
-    s = (_bg("k-2") + '<circle class="k-2d" cx="200" cy="210" r="156"/>'
-         '<path class="k-a" d="M54 206 C96 156 136 124 170 140 C184 146 192 156 200 156 C208 156 216 146 230 140 C264 124 304 156 346 206 C300 212 252 216 200 216 C148 216 100 212 54 206Z"/>'
-         '<path class="k-3" d="M54 206 C100 212 148 218 200 218 C252 218 300 212 346 206 C312 268 262 298 200 298 C138 298 88 268 54 206Z"/>'
+    s = (_bg("k-m") + '<circle class="k-2" cx="200" cy="210" r="156"/>'
+         '<path class="k-al" d="M54 206 C96 156 136 124 170 140 C184 146 192 156 200 156 C208 156 216 146 230 140 C264 124 304 156 346 206 C300 212 252 216 200 216 C148 216 100 212 54 206Z"/>'
+         '<path class="k-a" d="M54 206 C100 212 148 218 200 218 C252 218 300 212 346 206 C312 268 262 298 200 298 C138 298 88 268 54 206Z"/>'
          '<ellipse class="k-p" cx="246" cy="252" rx="34" ry="11" opacity=".55"/>')
     return _svg(s, label, cls)
 
 
 def drop(label=None, cls="art"):
     s = (_bg("k-p") + '<circle class="k-2" cx="200" cy="300" r="96"/>'
-         '<path class="k-a" d="M200 36 C200 36 92 172 92 250 C92 312 140 356 200 356 C260 356 308 312 308 250 C308 172 200 36 200 36Z"/>'
-         '<path class="k-3" d="M308 250 C308 312 260 356 200 356 C162 356 128 338 108 308 C190 330 268 300 300 214 C305 226 308 238 308 250Z"/>'
+         '<path class="k-al" d="M200 36 C200 36 92 172 92 250 C92 312 140 356 200 356 C260 356 308 312 308 250 C308 172 200 36 200 36Z"/>'
+         '<path class="k-a" d="M308 250 C308 312 260 356 200 356 C162 356 128 338 108 308 C190 330 268 300 300 214 C305 226 308 238 308 250Z"/>'
          '<ellipse class="k-p" cx="156" cy="232" rx="20" ry="40" transform="rotate(18 156 232)"/>')
     return _svg(s, label, cls)
 
@@ -74,39 +74,39 @@ def drop(label=None, cls="art"):
 def roller(label=None, cls="art"):
     dots = "".join(f'<circle class="k-p" cx="{x}" cy="{y}" r="5"/>' for x in range(124, 290, 24) for y in (112, 140, 168))
     s = (_bg("k-p") + '<rect class="k-2" x="0" y="0" width="400" height="70"/>'
-         '<rect class="k-a" x="96" y="88" width="208" height="104" rx="52"/>' + dots +
-         '<rect class="k-3d" x="190" y="186" width="20" height="40"/>'
-         '<rect class="k-3" x="176" y="222" width="48" height="150" rx="24"/>'
+         '<rect class="k-al" x="96" y="88" width="208" height="104" rx="52"/>' + dots +
+         '<rect class="k-3" x="190" y="186" width="20" height="40"/>'
+         '<rect class="k-a" x="176" y="222" width="48" height="150" rx="24"/>'
          '<rect class="k-p" x="190" y="246" width="20" height="54" rx="10" opacity=".5"/>')
     return _svg(s, label, cls)
 
 
 def jar(label=None, cls="art"):
-    s = (_bg("k-a") + '<circle class="k-p" cx="200" cy="222" r="150"/>'
-         '<rect class="k-3" x="100" y="100" width="200" height="62" rx="16"/>'
-         '<rect class="k-3d" x="100" y="146" width="200" height="16"/>'
-         '<rect class="k-2" x="88" y="158" width="224" height="186" rx="40"/>'
-         '<rect class="k-p" x="88" y="216" width="224" height="68"/>'
-         '<circle class="k-3" cx="200" cy="250" r="17"/>')
+    s = (_bg("k-2") + '<circle class="k-p" cx="200" cy="222" r="150"/>'
+         '<rect class="k-a" x="100" y="100" width="200" height="62" rx="16"/>'
+         '<rect class="k-3" x="100" y="146" width="200" height="16"/>'
+         '<rect class="k-m" x="88" y="158" width="224" height="186" rx="40"/>'
+         '<rect class="k-al" x="88" y="216" width="224" height="68"/>'
+         '<circle class="k-a" cx="200" cy="250" r="17"/>')
     return _svg(s, label, cls)
 
 
 def mirror(label=None, cls="art"):
-    s = (_bg("k-a") + '<rect class="k-2" x="0" y="262" width="400" height="138"/>'
-         '<rect class="k-3" x="184" y="230" width="32" height="150" rx="16"/>'
-         '<circle class="k-3" cx="200" cy="160" r="128"/>'
+    s = (_bg("k-m") + '<rect class="k-2" x="0" y="262" width="400" height="138"/>'
+         '<rect class="k-a" x="184" y="230" width="32" height="150" rx="16"/>'
+         '<circle class="k-a" cx="200" cy="160" r="128"/>'
          '<circle class="k-p" cx="200" cy="160" r="104"/>'
-         '<path class="k-a" d="M128 112 a104 104 0 0 1 120 -50 L120 190 a104 104 0 0 1 8 -78Z"/>')
+         '<path class="k-al" d="M128 112 a104 104 0 0 1 120 -50 L120 190 a104 104 0 0 1 8 -78Z"/>')
     return _svg(s, label, cls)
 
 
 def beam(label=None, cls="art"):
-    rays = "".join(f'<rect class="k-p" x="{200 - w / 2}" y="{y}" width="{w}" height="12" rx="6"/>' for y, w in ((206, 40), (230, 76), (254, 112), (278, 148)))
-    s = (_bg("k-a") + '<rect class="k-2" x="0" y="302" width="400" height="98"/>'
-         '<rect class="k-3" x="150" y="40" width="100" height="134" rx="24"/>'
-         '<rect class="k-3d" x="164" y="164" width="72" height="32" rx="8"/>' + rays +
-         '<circle class="k-a" cx="200" cy="90" r="18"/>'
-         '<rect class="k-2d" x="70" y="334" width="260" height="16" rx="8"/>')
+    rays = "".join(f'<rect class="k-al" x="{200 - w / 2}" y="{y}" width="{w}" height="12" rx="6"/>' for y, w in ((206, 40), (230, 76), (254, 112), (278, 148)))
+    s = (_bg("k-m") + '<rect class="k-2" x="0" y="302" width="400" height="98"/>'
+         '<rect class="k-a" x="150" y="40" width="100" height="134" rx="24"/>'
+         '<rect class="k-3" x="164" y="164" width="72" height="32" rx="8"/>' + rays +
+         '<circle class="k-p" cx="200" cy="90" r="18"/>'
+         '<rect class="k-p" x="70" y="334" width="260" height="16" rx="8"/>')
     return _svg(s, label, cls)
 
 

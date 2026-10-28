@@ -22,7 +22,7 @@ PASS  No leftover template tokens or placeholder text (0 found)
 PASS  Unsupported-claim scan (best, #1, guarantee, awards, years, star ratings): 0 hits
 PASS  Website demo banner on every page while demo_mode is on (63/63)
 PASS  Footer links to Privacy, Terms and Cookie pages on every page (0 missing)
-PASS  Text contrast ≥ 4.5:1 for all key colour pairs: paper on page ground 16.1, ink on paper 16.1, ink on paper-d 14.1, ink on accent 10.7, ink on field 2 12.0, paper on field 3 10.0, paper on char 13.4, accent on char 8.9, accent on ink (dropdown) 10.7, field 3 on paper (legend, links) 10.0, error on paper-d 6.2, ink on white input 18.0, demo note 13.4
+PASS  Text contrast ≥ 4.5:1 for all key colour pairs: ink on white 16.0, ink on page ground 14.7, ink on mist 13.6, muted on white 6.7, muted on ground 6.2, muted on mist 5.7, white on accent (buttons) 5.8, accent links on white 5.8, accent on ground 5.4, accent on soft panel 4.7, ink on soft panel 12.9, muted on soft panel 5.4, white on deep panel 15.0, error on ground 6.0, demo note 13.4
 PASS  Only offered services have pages (12 service folders, 0 not offered: )
 PASS  No links to services that are not offered (0 pages with such links)
 PASS  No sentences mention services this client does not offer

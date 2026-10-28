@@ -209,12 +209,12 @@ def lum(h):
 def cr(a, b):
     la, lb = sorted([lum(a), lum(b)], reverse=True); return (la + .05) / (lb + .05)
 _style = re.search(r"--acc:(#[0-9a-fA-F]{6});--f2:(#[0-9a-fA-F]{6});--f3:(#[0-9a-fA-F]{6})", open(os.path.join(ROOT, "index.html"), encoding="utf-8").read())
-ACC, F2, F3 = (_style.group(1), _style.group(2), _style.group(3)) if _style else ("#f4b8c4", "#c8d8c3", "#6b1f37")
-INK, PAPER, PAPER_D, CHAR = "#1c1517", "#f7f1ef", "#ece2df", "#2e2427"
-pairs = [("paper on page ground", PAPER, INK), ("ink on paper", INK, PAPER), ("ink on paper-d", INK, PAPER_D), ("ink on accent", INK, ACC),
-         ("ink on field 2", INK, F2), ("paper on field 3", PAPER, F3), ("paper on char", PAPER, CHAR), ("accent on char", ACC, CHAR),
-         ("accent on ink (dropdown)", ACC, INK), ("field 3 on paper (legend, links)", F3, PAPER), ("error on paper-d", "#a3122c", PAPER_D),
-         ("ink on white input", INK, "#ffffff"), ("demo note", "#151100", "#ffd54a")]
+ACC, F2, F3 = (_style.group(1), _style.group(2), _style.group(3)) if _style else ("#1f6f78", "#f1e4e1", "#0e2a36")
+INK, MUTE, PAPER, PAPER_D, GROUND = "#10242e", "#4b5f68", "#ffffff", "#e8eef0", "#f3f6f7"
+pairs = [("ink on white", INK, PAPER), ("ink on page ground", INK, GROUND), ("ink on mist", INK, PAPER_D), ("muted on white", MUTE, PAPER),
+         ("muted on ground", MUTE, GROUND), ("muted on mist", MUTE, PAPER_D), ("white on accent (buttons)", PAPER, ACC), ("accent links on white", ACC, PAPER),
+         ("accent on ground", ACC, GROUND), ("accent on soft panel", ACC, F2), ("ink on soft panel", INK, F2), ("muted on soft panel", MUTE, F2),
+         ("white on deep panel", PAPER, F3), ("error on ground", "#b3261e", GROUND), ("demo note", "#151100", "#ffd54a")]
 low = [f"{n} {cr(a,b):.1f}:1" for n, a, b in pairs if cr(a, b) < 4.5]
 (fails if low else passes).append("Text contrast ≥ 4.5:1 for all key colour pairs: " + ", ".join(f"{n} {cr(a,b):.1f}" for n, a, b in pairs))
 
@@ -249,7 +249,7 @@ if CFG.get("finder", True):
     ok = True
     for fp in ("index.html", "treatments/index.html"):
         src = open(os.path.join(ROOT, fp), encoding="utf-8").read()
-        rows = re.findall(r'<li class="fr [^"]+" data-c="([a-z ]+)" data-dt="([0-2])">', src)
+        rows = re.findall(r'<li class="fr" data-c="([a-z ]+)" data-dt="([0-2])">', src)
         ok = ok and len(rows) == len(_offered) and "js/finder.js" in src and 'id="fd-book"' in src
     (passes if ok else fails).append(f"Treatment finder on home and treatments hub: {len(_offered)} treatments with concerns and downtime, finder.js loaded")
 

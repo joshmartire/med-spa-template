@@ -1,5 +1,5 @@
 {
-  "_README": "Edit these values for each client, then run: python3 _build/build.py && python3 _build/qa.py. Values marked SAMPLE must be replaced before launch. Keep demo_mode true until real client details are in; it adds noindex to every page and the yellow website demo banner. Colours (#rrggbb): accent = the brand colour used for buttons and highlight panels (it sits behind dark text, so it must be a light, bright colour; the build stops if it is too dark); field_2 = the second panel colour (light); field_3 = the deep panel colour (dark, behind light text). logo: path to the client's logo, e.g. assets/img/client/logo.png (transparent PNG best); empty = built-in mark + name. services: remove any slug the client does not offer, then fix any sentences listed in _build/removed-service-mentions.txt. prices: starting price per service shown on the treatment menu, the finder and each service page (set to null to show 'Priced at consultation'). photos: the client's own photos only (see _build/photos.py); hero_photo and category_photos fill the big picture slots (otherwise the drawn artwork is used). provider_line: who performs treatments, written by the client and checked by their medical director. intro: false turns the opening animation off; intro_scope 'all' plays it on whichever page a visitor lands on first, 'home' limits it to the home page. finder: false removes the treatment finder.",
+  "_README": "Edit these values for each client, then run: python3 _build/build.py && python3 _build/qa.py. Values marked SAMPLE must be replaced before launch. Keep demo_mode true until real client details are in; it adds noindex to every page and the yellow website demo banner. Colours (#rrggbb): accent = the brand colour for buttons and links (white text sits on it, so it must be deep enough; the build stops if it is too light); field_2 = a soft light panel colour (dark text on it); field_3 = the deep panel colour (white text on it). standards: the clinic's safety and quality standards, shown under the hero, in a 'Your safety comes first' section and on every treatment page. SAMPLE: the clinic must confirm every line is true before launch; remove any that aren't. logo: path to the client's logo, e.g. assets/img/client/logo.png (transparent PNG best); empty = built-in mark + name. services: remove any slug the client does not offer, then fix any sentences listed in _build/removed-service-mentions.txt. prices: starting price per service shown on the treatment menu, the finder and each service page (set to null to show 'Priced at consultation'). photos: the client's own photos only (see _build/photos.py); hero_photo and category_photos fill the big picture slots (otherwise the drawn artwork is used). provider_line: who performs treatments, written by the client and checked by their medical director. intro: false turns the opening animation off; intro_scope 'all' plays it on whichever page a visitor lands on first, 'home' limits it to the home page. finder: false removes the treatment finder.",
   "demo_mode": true,
   "business_name": "Peony Aesthetics",
   "legal_name": "Peony Aesthetics Inc.",
@@ -7,14 +7,22 @@
   "region_label": "Windsor-Essex",
   "province": "ON",
   "country": "CA",
-  "hero_claim": "fresh, not frozen",
-  "accent": "#f4b8c4",
-  "field_2": "#c8d8c3",
-  "field_3": "#6b1f37",
+  "hero_claim": "Natural results, medically led",
+  "accent": "#1f6f78",
+  "field_2": "#f1e4e1",
+  "field_3": "#0e2a36",
   "logo": "",
   "intro": true,
   "intro_scope": "all",
   "finder": true,
+  "standards": [
+    {"title": "Licensed injectors", "text": "Injectables are performed by registered nurses and physicians trained in aesthetic medicine."},
+    {"title": "Medical director oversight", "text": "Our treatment protocols are set and reviewed by our medical director."},
+    {"title": "Consultation first", "text": "Your medical history, medications and goals are reviewed before any treatment is booked."},
+    {"title": "Sterile, single-use supplies", "text": "Needles, cannulas and treatment tips are single-use, and every room is cleaned between clients."},
+    {"title": "Approved products", "text": "We use products approved for use in Canada, bought from authorized distributors."},
+    {"title": "Follow-up visit", "text": "We book a check-in about two weeks after injectables to review your result with you."}
+  ],
   "provider_line": "Injectable treatments are performed by registered nurses and physicians, under the direction of our medical director. Every treatment starts with a consultation.",
   "services": [
     "wrinkle-relaxing-injections",
