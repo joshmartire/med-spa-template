@@ -1,0 +1,33 @@
+PASS  Internal links and assets: 0 broken
+PASS  Orphan pages (no incoming internal links): 0
+PASS  Lowest incoming-link counts: thank-you/index.html (0), treatments/body-contouring/lasalle/index.html (9), treatments/body-contouring/tecumseh/index.html (9), treatments/body-contouring/windsor/index.html (9), treatments/lip-filler/lasalle/index.html (9)
+PASS  Unique titles: 61 indexable pages, 0 duplicates
+PASS  Unique meta descriptions: 61 indexable pages, 0 duplicates
+PASS  Meta description present on all indexable pages (0 missing)
+PASS  Titles over 65 characters: 0
+PASS  Descriptions over 160 characters: 0
+PASS  Exactly one H1 per page: 63/63
+PASS  No duplicate element IDs (0 pages with duplicates)
+PASS  Images missing alt attribute: 0
+PASS  Form fields with an associated label: 0 unlabelled
+PASS  Canonical URLs match file paths on https://rankboss-med-spa.pages.dev: 0 mismatches
+PASS  og:url matches canonical on every page (0 mismatches)
+PASS  sitemap.xml valid XML, 61 URLs; not-in-site 0, missing 0, duplicates 0
+PASS  robots.txt allows crawling and references the canonical sitemap
+PASS  JSON-LD parses on all pages (0 errors). Types: BreadcrumbList ×61, ContactPage ×1, ItemList ×1, MedicalBusiness ×1, OfferCatalog ×1, Service ×48, WebSite ×1
+PASS  Service pages with 500–600 words of main content: 12/12 (range 500–571)
+PASS  City service pages: 36 pages, 248–298 words of main content
+PASS  Near-duplicate check (5-word shingle overlap) across all 36 city pages: highest 45% (treatments/skin-boosters/windsor/index.html vs treatments/wrinkle-relaxing-injections/windsor/index.html)
+PASS  No leftover template tokens or placeholder text (0 found)
+PASS  Unsupported-claim scan (best, #1, guarantee, awards, years, star ratings): 0 hits
+PASS  Website demo banner on every page while demo_mode is on (63/63)
+PASS  Footer links to Privacy, Terms and Cookie pages on every page (0 missing)
+PASS  Text contrast ≥ 4.5:1 for all key colour pairs: paper on page ground 16.1, ink on paper 16.1, ink on paper-d 14.1, ink on accent 10.7, ink on field 2 12.0, paper on field 3 10.0, paper on char 13.4, accent on char 8.9, accent on ink (dropdown) 10.7, field 3 on paper (legend, links) 10.0, error on paper-d 6.2, ink on white input 18.0, demo note 13.4
+PASS  Only offered services have pages (12 service folders, 0 not offered: )
+PASS  No links to services that are not offered (0 pages with such links)
+PASS  No sentences mention services this client does not offer
+PASS  Opening animation overlay + once-per-session check on exactly the 61 intended pages (never 404 or thank-you)
+PASS  Treatment finder on home and treatments hub: 12 treatments with concerns and downtime, finder.js loaded
+PASS  No prescription-drug brand names or promised results in page text (0 found)
+
+31 passed, 0 warnings, 0 failed
